@@ -1,10 +1,17 @@
 import React from "react";
-
-export const ContactShortDisplay = (props: { contact: any; }) => {
-	let item = props.contact;
+export const ContactShortDisplay = (props: { contact: any; onEdit: any, onDelete: any }) => {
+	let {contact, onEdit, onDelete } = props;
 	return (
-		<span>
-			{item.firstName}, {item.lastName} ,{item.gender} ,{item.email}
-		</span>
+		<div className="contact-short-display">
+			<span>
+				{contact.firstName}, {contact.lastName} ,{contact.gender} ,{contact.email}
+			</span>
+			<button  className="edit-button" onClick={() => onEdit(contact.id)}>
+					Edit
+			</button>
+			<button className="delete-button" onClick={() => onDelete(contact.id)}>
+					Delete
+			</button>
+		</div>
 	);
 };

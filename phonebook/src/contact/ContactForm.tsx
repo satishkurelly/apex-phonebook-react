@@ -1,24 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 export default function ContactForm(props) {
 	const [firstName, setFirstName] = React.useState("");
 	const [lastName, setLastName] = React.useState("");
 	const [gender, setGender] = React.useState("");
 	const [email, setEmail] = React.useState("");
+	const [id, setId] = React.useState(null);
+
+	useEffect(() => {
+		if(props.contact){
+			setFirstName(props.contact.firstName);
+			setLastName(props.contact.lastName);
+			setGender(props.contact.gender);
+			setEmail(props.contact.email);
+			setId(props.contact.id);
+		}
+	}, [props.contact]);
+
+
 	const handleSubmit = event => {
 		event.preventDefault();
 		console.log(`
-      email: ${email}
-      firstName: ${firstName}
-      lastName: ${lastName}
-      gender: ${gender}`);
-		fetch("http://localhost:3001/contacts", {
-			method: "POST",
+    //   email: ${email}
+    //   firstName: ${firstName}
+    //   lastName: ${lastName}
+    //   gender: ${gender}`);
+
+	  const contact = { firstName, lastName, email, gender };
+	  const url = id ? `http://localhost:3001/contacts/${id}` : "http://localhost:3001/contacts";
+	  const method = id ? "PUT" : "POST";
+	
+	  fetch(url, {
+			method: method,
 			mode: "cors",
 			cache: "no-cache",
 			headers: {
 				"Content-Type": "application/json"
 			},
-			body: JSON.stringify({ firstName, lastName, email, gender })
+			body: JSON.stringify(contact)
 		})
 			.then(res => res.json())
 			.then(
